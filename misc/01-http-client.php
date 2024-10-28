@@ -68,6 +68,9 @@ $handler = function (Psr\Http\Message\RequestInterface $request) {
 
     curl_close($connection);
 
+//echo 'результирующий урл<br><hr>';
+//echo curl_getinfo($connection, CURLINFO_EFFECTIVE_URL).PHP_EOL; //результирующий урл
+
     return $response;
 };
 

@@ -41,7 +41,7 @@ use \DTS\eBaySDK\Finding\Enums;
  */
 $service = new Services\FindingService([
     'credentials' => $config['production']['credentials'],
-    'globalId'    => Constants\GlobalIds::US
+    'globalId'    => Constants\GlobalIds::MOTORS
 ]);
 
 /**
@@ -52,7 +52,16 @@ $request = new Types\FindItemsByKeywordsRequest();
 /**
  * Assign the keywords.
  */
-$request->keywords = 'Harry Potter';
+$request->keywords = 'Cobra Exhaust vtx1300';
+
+$itemFilter = new Types\ItemFilter();
+$itemFilter->name = 'ListingType';
+//$itemFilter->value[] = 'Auction';
+//$itemFilter->value[] = 'AuctionWithBIN';
+$itemFilter->value[] = 'FixedPrice';
+
+$request->itemFilter[] = $itemFilter;
+
 
 /**
  * Send the request.
@@ -74,12 +83,14 @@ if (isset($response->errorMessage)) {
 
 if ($response->ack !== 'Failure') {
     foreach ($response->searchResult->item as $item) {
-        printf(
-            "(%s) %s: %s %.2f\n",
-            $item->itemId,
-            $item->title,
-            $item->sellingStatus->currentPrice->currencyId,
-            $item->sellingStatus->currentPrice->value
-        );
+        echo '<pre>';
+        print_r($item);
+//        printf(
+//            "(%s) %s: %s %.2f\n",
+//            $item->itemId,
+//            $item->title,
+//            $item->sellingStatus->currentPrice->currencyId,
+//            $item->sellingStatus->currentPrice->value
+//        );
     }
 }

@@ -36,12 +36,17 @@ use \DTS\eBaySDK\Browse\Services;
 use \DTS\eBaySDK\Browse\Types;
 use \DTS\eBaySDK\Browse\Enums;
 
+use DTS\eBaySDK\Services\BaseRestService;
+//echo '<pre>';
+//print_r(BaseRestService::getConfigDefinitions());
+//die();
+
 /**
  * Create the service object.
  */
 $service = new Services\BrowseService([
     'authorization' => $config['production']['oauthUserToken'],
-    'marketplaceId' => Constants\GlobalIds::GB
+    'marketplaceId' => Constants\GlobalIds::MOTORS
 ]);
 
 /**
@@ -52,15 +57,24 @@ $request = new Types\SearchForItemsRestRequest();
 /**
  * Note how URI parameters are just properties on the request object.
  */
-$request->q = 'Harry Potter';
-$request->sort = '-price';
-$request->limit = '10';
-$request->offset = '0';
+$request->q = 'Cobra Exhaust vtx1300';
+$request->sort = 'PricePlusShippingLowest';
+//$request->limit = '10';
+//$request->offset = '0';
+
+// c фильтрами не работает
+//$request->filter = 'conditionId:3000';
+
+//echo '<pre>';
+//print_r($request);
+//die();
+
 
 /**
  * Send the request.
  */
 $response = $service->searchForItems($request);
+
 
 /**
  * Output the result of calling the service operation.
@@ -79,12 +93,14 @@ if (isset($response->errors)) {
 
 if ($response->getStatusCode() === 200) {
     foreach ($response->itemSummaries as $item) {
-        printf(
-            "(%s) %s: %s %.2f\n",
-            $item->itemId,
-            $item->title,
-            $item->price->currency,
-            $item->price->value
-        );
+        echo '<pre>';
+        print_r($item);
+//        printf(
+//            "(%s) %s: %s %.2f\n",
+//            $item->itemId,
+//            $item->title,
+//            $item->price->currency,
+//            $item->price->value
+//        );
     }
 }
